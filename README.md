@@ -1,100 +1,136 @@
-# Heaps' Law on Japanese anime subtitles, 1983–2024
+# Zipf's Law across legal and religious corpora
 
-V = K · N^β fitted across 3-year time bins, on morphologically segmented Japanese.
+Empirical testing of Zipf's law on six corpora in five scripts — Supreme Court of
+India judgments (English), the Hebrew Bible, the Greek New Testament, the Qur'an
+(Arabic), the Bhagavad Gita (Sanskrit) and the Pali Canon.
 
-## Corpus
+Coursework for an Information Retrieval course.
 
-| | |
-|---|---|
-| Shows | 340 (of 346; 98.3% matched to an air year) |
-| Episodes | 6,854 |
-| Subtitle lines | 475,038 |
-| Tokens (Japanese, segmented) | **3,273,982** |
-| Distinct word forms | 57,215 |
-| Year span | 1983–2024 |
+## Headline result
 
-**Sources.** Subtitles: `harikc456/anime-subs-mapping`. Air years: `manami-project/anime-offline-database`
-(tag 2025-18), matched on title plus synonyms after ASCII-folding, with season
-suffixes (`_S2`, `_Eng`) stripped on retry. The 6 unmatched shows are listed in
-`corpus/unmatched.txt`.
+The fitted Zipf exponent depends heavily on **where you cut the tail**. Reporting a
+single number without stating the fitting window is not meaningful.
 
-**Segmentation.** Japanese has no whitespace, so tokens come from `fugashi` +
-`unidic-lite` (MeCab/UniDic). Surface forms, not lemmas. Punctuation, symbols and
-whitespace POS classes (補助記号, 空白, 記号) are dropped.
+| Corpus | Tokens | Types | Top 1,000 | Top 10,000 | All ranks |
+|---|---|---|---|---|---|
+| Pali Canon | 2,805,943 | 153,693 | −0.861 | **−1.001** | −1.291 |
+| Hebrew Bible | 306,761 | 41,615 | −0.870 | −1.011 | −1.039 |
+| Greek New Testament | 137,554 | 17,566 | −1.053 | −1.102 | −0.997 |
+| Qur'an | 77,429 | 16,312 | −0.928 | −1.014 | −0.896 |
+| Bhagavad Gita | 6,823 | 4,235 | −0.781 | — | −0.449 |
+| SC judgments (English) | 291,026 | 9,609 | — | — | −1.456 |
 
-Subtitles are derivative works — cite the dataset, don't redistribute the raw text.
+The Pali Canon moves from −0.86 to −1.29 on the same data with the same estimator.
+At 10,000 ranks it is at −1.001, essentially perfect Zipf. The whole-corpus figure is
+dominated by the hapax shelf, not by the language.
 
-## Method
+## Full statistics
 
-- **Shuffling.** Vocabulary growth depends on document order, so each curve is the
-  mean of **30 random shuffles**, with a ±1 s.d. band. Unshuffled chronological
-  order would bias β upward.
-- **Shuffle unit.** Pseudo-documents of 500 tokens. Mean real episode length is 477
-  tokens, so these approximate episode granularity while giving ~6,500 units.
-- **Burn-in.** Heaps is not a power law at small N. Everything below **N = 10,000**
-  is excluded from the fit and shaded grey on the log-log plot.
-- **Thin bins.** Bins under 100,000 tokens can't support a fit. Pre-2004 bins are
-  merged into one group; the 2022–2024 bin (one show) is folded into 2019–2021.
-
-## Results
-
-| Bin | Tokens | Types | β | K | R² | Zipf α | 1/α |
+| Corpus | Tokens | Types | TTR | Hapax % | OLS slope | MLE α | KS |
 |---|---|---|---|---|---|---|---|
-| 1983–2003 (merged) | 336,161 | 17,480 | 0.579 | 11.8 | 0.9969 | 1.276 | 0.784 |
-| 2004–2006 | 452,529 | 22,042 | 0.594 | 10.3 | 0.9977 | 1.268 | 0.789 |
-| 2007–2009 | 378,614 | 18,090 | 0.576 | 11.9 | 0.9967 | 1.293 | 0.773 |
-| 2010–2012 | 714,462 | 26,355 | 0.572 | 13.0 | 0.9956 | 1.348 | 0.742 |
-| 2013–2015 | 650,001 | 25,781 | 0.576 | 12.8 | 0.9957 | 1.326 | 0.754 |
-| 2016–2018 | 559,059 | 23,887 | 0.581 | 12.0 | 0.9959 | 1.305 | 0.766 |
-| 2019–2024 | 183,156 | 12,099 | 0.585 | 10.5 | 0.9981 | 1.214 | 0.824 |
-| **POOLED** | **3,273,982** | **57,215** | **0.554** | **16.9** | **0.9924** | 1.511 | 0.662 |
+| Pali Canon (whole) | 2,805,943 | 153,693 | 0.055 | 45.5% | −1.291 | 1.915 | 0.016 |
+| — Vinaya | 422,916 | 32,405 | 0.077 | 40.3% | −1.229 | 2.008 | 0.010 |
+| — Sutta | 1,595,681 | 127,027 | 0.080 | 47.8% | −1.199 | 2.104 | 0.009 |
+| — Abhidhamma | 787,346 | 17,874 | 0.023 | 30.0% | −1.572 | 1.680 | 0.027 |
+| Hebrew Bible (whole words) | 306,761 | 41,615 | 0.136 | 53.3% | −1.039 | 1.920 | 0.013 |
+| Hebrew Bible (morphemes split) | 471,724 | 19,808 | 0.042 | 42.9% | −1.303 | 1.917 | 0.017 |
+| Greek New Testament | 137,554 | 17,566 | 0.128 | 56.3% | −0.997 | 1.953 | 0.003 |
+| Qur'an | 77,429 | 16,312 | 0.211 | 60.7% | −0.896 | 2.010 | 0.004 |
+| Bhagavad Gita | 6,823 | 4,235 | 0.621 | 84.0% | −0.449 | 2.894 | 0.023 |
+| SC judgment prose | 291,026 | 9,609 | 0.033 | 31.5% | −1.456 | — | — |
+| SC case titles | 563,000 | 29,660 | 0.053 | 55.1% | −1.110 | 1.769 | 0.017 |
 
-## Reading the figures
+## Three findings worth writing up
 
-`heaps_loglog.png` — the fit itself. Straight lines above the burn-in, R² > 0.995
-everywhere. The shaded region is what gets excluded and why.
+**1. Morphology, not vocabulary, drives much of the tail.** The Westminster Leningrad
+Codex marks prefix morphemes (conjunction, article, prepositions) that attach to the
+following word in writing. Keeping words whole gives 41,615 types; splitting at those
+boundaries gives 19,808 — the vocabulary halves and the exponent moves from −1.04 to
+−1.30. See `02-scriptures/results/morphology_effect.png`.
 
-`heaps_linear.png` — the slowdown. The pooled curve reaches 30,000 types at 1M
-tokens and only 57,215 at 3.27M: tripling the corpus adds under twice the
-vocabulary. It never flattens, but the curvature is unmistakable.
+**2. Genre changes the exponent within one language.** The Abhidhamma basket is larger
+than the entire Hebrew Bible (787k tokens) yet uses only 17,874 distinct forms, a
+type-token ratio of 0.023 — roughly a third of the Sutta basket's. Its slope (−1.572)
+is the steepest measured here. The paṭṭhāna method enumerates conditional relations
+exhaustively over a closed technical vocabulary, so a small term set recurs enormously
+while the tail starves. One language, one transmission tradition, three genres,
+measurably different exponents.
 
-`heaps_discovery_rate.png` — **the strongest figure**. New distinct words per 1,000
-tokens, plotted against N. It falls from ~250 at N=1,000 to ~7 at N=3M — a 35×
-decline, straight on log-log. This is the quantitative version of "the plateau":
-β < 1 *is* a power-law decay in the discovery rate, and here you can read the
-exponent straight off the slope.
+**3. Small corpora produce fake violations.** The Bhagavad Gita's −0.449 says nothing
+about Sanskrit. At 6,823 tokens the curve runs out of data before a tail can form.
+Compounding it, written Sanskrit fuses adjacent words (sandhi), which manufactures
+one-off forms — hence 84% hapax and a TTR of 0.62 that no natural language has.
 
-`heaps_beta_over_time.png` — β and K per bin.
+## Layout
 
-## What the numbers say
+```
+01-supreme-court/      SC of India judgments (English)
+  data/                43,495-judgment metadata index with direct PDF URLs
+  scripts/             downloader, Zipf analysis, plotting
+  corpus/              122 judgment documents used for the prose analysis
+  results/             figures and rank tables
 
-**β is remarkably stable across four decades**: 0.572 to 0.594, a spread of 0.022
-across seven bins spanning 1983–2024. Anime dialogue has not become measurably more
-or less lexically open since the 1980s. Given that the bins differ in size by 4×,
-that stability is a real result rather than an artifact.
+02-scriptures/         Hebrew, Greek, Arabic, Sanskrit
+  scripts/             corpus builder + analysis
+  corpus/              tokenised text, one file per corpus
+  results/             figures, summary table
 
-**The pooled β (0.554) is lower than every individual bin.** That is not a mistake —
-it's the expected consequence of pooling. Bins share a large common core vocabulary,
-so merging them adds tokens much faster than it adds types, which flattens the curve.
-Worth a paragraph: it shows β is a property of a corpus, not of a language.
+03-tipitaka/           Pali Canon, split by basket
+04-distribution-plots/ full-vocabulary and windowed plots for every corpus
+rank-tables/           complete rank/frequency/relative-frequency tables (large ones gzipped)
+```
 
-**K moves inversely to β** (K = 16.9 pooled versus 10–13 per bin). K and β trade off
-in the fit — a higher intercept is compensated by a shallower slope. Never compare K
-values across corpora without holding β roughly fixed.
+Each sub-directory has its own README with the source edition, licence, and the exact
+preprocessing decisions used.
 
-**The β ≈ 1/α check partly holds.** Per-bin, 1/α lands at 0.74–0.82 against measured
-β of 0.57–0.59: same ballpark, consistently 25–35% high. The relation is asymptotic
-and assumes a pure power law over the whole range, which the Zipf curve isn't
-(see the earlier Zipf work — α depends heavily on the fitting window). Reporting the
-gap honestly, with that explanation, is better than pretending it matched.
+## Data sources and licences
+
+| Corpus | Source | Licence |
+|---|---|---|
+| SC judgments | AWS Open Data `indian-supreme-court-judgments`; index via `darshjme/india-supreme-court-search` | CC-BY-4.0; judgments exempt under s.52(1)(q)(iv), Copyright Act 1957 |
+| Judgment prose sample | MILDSum (Law-AI, IIT Kharagpur); ILDC/CJPE (Exploration Lab, IIT Kanpur) | research use; CC-BY-NC 4.0 |
+| Hebrew Bible | Westminster Leningrad Codex, `openscriptures/morphhb` | CC-BY 4.0 |
+| Greek NT | SBLGNT / MorphGNT, `morphgnt/sblgnt` | CC-BY-SA 3.0 + SBLGNT licence |
+| Qur'an | Arabic text, `risan/quran-json` | MIT (code); text public domain |
+| Bhagavad Gita | `gita/gita` | MIT |
+| Pali Canon | Mahāsaṅgīti edition, `suttacentral/bilara-data` | CC0 |
+
+Cite the digital editions, not just the texts. Papers to cite: Malik et al. (ACL 2021,
+ILDC); Datta et al. (EMNLP 2023, MILDSum).
 
 ## Reproducing
 
 ```
-pip install fugashi unidic-lite pandas matplotlib numpy
-git clone --depth 1 https://github.com/harikc456/anime-subs-mapping.git
-# anime-offline-database JSON: raw.githubusercontent.com, tag 2025-18, minified
+pip install -r requirements.txt
 
-python scripts/build_anime_corpus.py    # writes heaps_corpus/, ~15 min
-python scripts/analyse_heaps.py         # writes plots + heaps_parameters.csv
+python 02-scriptures/scripts/build_scripture_corpora.py
+python 02-scriptures/scripts/analyse_scriptures.py
+python 03-tipitaka/scripts/analyse_tipitaka.py
+python 04-distribution-plots/scripts/plot_all_words.py
+python 04-distribution-plots/scripts/plot_windows.py
 ```
+
+Corpus building needs these repositories cloned into `scripture_src/`:
+
+```
+git clone --depth 1 https://github.com/openscriptures/morphhb.git
+git clone --depth 1 https://github.com/morphgnt/sblgnt.git
+git clone --depth 1 https://github.com/risan/quran-json.git
+git clone --depth 1 https://github.com/gita/gita.git
+git clone --depth 1 https://github.com/suttacentral/bilara-data.git
+```
+
+Rendering Hebrew, Arabic and Devanagari bar charts needs the fonts
+`fonts-sil-ezra`, `fonts-hosny-amiri` and `fonts-noto-core`.
+
+## Known limitations
+
+- The judgment-prose corpus (122 documents) is annotator-selected passages, not a
+  uniform random sample. Rebuild it from the official PDFs with
+  `01-supreme-court/scripts/download_judgments.py` before quoting those numbers.
+- Sandhi is not segmented for Sanskrit or Pali, so type counts are inflated in both.
+  Within-Pali basket comparisons are unaffected since the bias applies equally.
+- Corpus sizes vary 400× across the set. Zipf exponents are size-sensitive; subsample
+  to a common token count before comparing across corpora.
+- OLS on log-log is reported throughout for comparability, but the MLE (α) column is
+  the defensible estimate.
