@@ -1,0 +1,6 @@
+corpus,types_total,slope_top1000,coverage_top1000,slope_top10000,coverage_top10000,slope_all
+tipitaka_all,153693,-0.861,54.3,-1.001,80.9,-1.291
+hebrew_ot_whole,41615,-0.87,57.9,-1.011,85.7,-1.039
+greek_nt,17566,-1.053,74.1,-1.102,94.5,-0.997
+arabic_quran,16312,-0.928,63.6,-1.014,91.8,-0.896
+sanskrit_gita,4235,-0.781,52.6,,,-0.449

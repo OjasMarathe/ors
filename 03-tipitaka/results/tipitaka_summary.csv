@@ -1,0 +1,5 @@
+corpus,tokens,types,type_token_ratio,hapax,hapax_pct,ols_slope,mle_alpha,mle_xmin,ks_distance
+tipitaka_all,2805943,153693,0.0548,69940,45.5,-1.291,1.915,22,0.0155
+tipitaka_vinaya,422916,32405,0.0766,13067,40.3,-1.229,2.008,16,0.0104
+tipitaka_sutta,1595681,127027,0.0796,60668,47.8,-1.199,2.104,72,0.009
+tipitaka_abhidhamma,787346,17874,0.0227,5358,30.0,-1.572,1.68,8,0.0273
