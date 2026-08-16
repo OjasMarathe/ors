@@ -1,0 +1,6 @@
+corpus,tokens,types,type_token_ratio,hapax,hapax_pct,ols_slope,mle_alpha,mle_xmin,ks_distance
+hebrew_ot_whole,306761,41615,0.1357,22186,53.3,-1.039,1.92,3,0.0125
+greek_nt,137554,17566,0.1277,9881,56.3,-0.997,1.953,2,0.0032
+arabic_quran,77429,16312,0.2107,9905,60.7,-0.896,2.01,1,0.004
+sanskrit_gita,6823,4235,0.6207,3558,84.0,-0.449,2.894,1,0.0234
+hebrew_ot_morphemes,471724,19808,0.042,8507,42.9,-1.303,1.917,20,0.0174
